@@ -1,0 +1,25 @@
+<ng-container *transloco="let t">
+<h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+    style="margin-bottom: 0px !important;">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold leading-tight">{{t('location')}}</div>
+        <div class="-mr-3">
+            <button mat-icon-button (click)="cancel()">
+                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:close'"></mat-icon>
+            </button>
+        </div>
+    </div>
+</h1>
+<div mat-dialog-content class="content-dialog">
+    <div class="map-container">
+        <div class="map-frame">
+            <div id="map" class="map-item"></div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="dialog-footer" align="end">
+    <span style="flex: 1 1 auto;"></span>
+    <button mat-raised-button color="default" (click)="cancel()">{{t('cancel')}}</button>
+    <button mat-raised-button color="primary" (click)="submit()">{{t('submit')}}</button>
+</div>
+</ng-container>

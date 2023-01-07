@@ -1,0 +1,48 @@
+layout {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  /* Base styles for individual layouts */
+  > * {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  /* Base styles for components that load as a route */
+  router-outlet {
+    + * {
+      position: relative;
+      display: flex;
+      flex: 1 1 auto;
+      width: 100%;
+    }
+  }
+}
+
+.bottom-bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999;
+  width: 100%;
+  height: 56px;
+  position: fixed;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #f43f5e;
+  border-top: 1px solid #fff;
+
+  i {
+    padding: 8px;
+    cursor: pointer;
+  }
+}
+
+.dark-background {
+  background-color: #0f172a !important;
+}

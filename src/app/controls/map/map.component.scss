@@ -1,0 +1,30 @@
+.map-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50vh;
+    min-height: 200px;
+}
+
+.map-frame {
+    height: 100%;
+}
+
+#map {
+    height: 100%;
+}
+
+.leaflet-control-container .leaflet-routing-container-hide {
+    display: none!important;
+}
+
+.map-mat-card{
+    border-radius: 12px;
+}
+
+.map-item{
+    z-index: 1;
+    border-radius: 12px;
+}

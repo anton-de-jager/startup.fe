@@ -1,0 +1,223 @@
+<ng-container *transloco="let t">
+    
+    <div *ngIf="user" class="flex flex-col flex-auto min-w-0 pt-0 pb-12">
+
+        <fuse-alert *ngIf="trial" [type]="'warn'" [appearance]="'fill'" class="mb-8">
+            <span fuseAlertTitle>Complete Subscription</span>
+            Your trial ends in {{daysLeft}} days
+            <button class="mt-4" mat-flat-button type="button" (click)="subscribe()"
+                [color]="'default'">Re-Send Subscription Email
+            </button>
+        </fuse-alert>
+
+        <!-- Header -->
+        <div class="bg-card" style="background-color:unset!important" *ngIf="!isReseller">
+            <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+                <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-2 sm:my-2">
+                    <div class="flex flex-auto items-center min-w-0">
+                        <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                            <img class="w-full h-full object-cover"
+                                [src]="imagesFolder + 'Users/' + user.id + user.urlImage + '?t=' + timestamp"
+                                onerror="this.src='assets/images/no-image.jpg';this.onerror='';">
+                        </div>
+                        <div class="flex flex-col min-w-0 ml-4">
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate"
+                                style="color: #FFF">
+                                {{user.name}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid ml-8 mr-8" *ngIf="isReseller">
+            Earnings will be displayed here soon ;)
+        </div>
+
+        <!-- Main -->
+        <div class="grid ml-8 mr-8" *ngIf="!isReseller">
+            <div class="flex-auto -mt-px pt-4 sm:pt-6">
+                <div class="w-full max-w-screen-xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-6 w-full min-w-0">
+                        <!-- Summary -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-4xl font-bold text-red-600 dark:text-red-500">{{t('total_reviews')}}
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                    {{reviewCount}}
+                                </div>
+                                <div class="flex items-center">
+                                    <mat-icon class="text-rose-500 icon-size-10"
+                                        [svgIcon]="review >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                    </mat-icon>
+                                    <mat-icon class="text-rose-500 icon-size-10"
+                                        [svgIcon]="review >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                    </mat-icon>
+                                    <mat-icon class="text-rose-500 icon-size-10"
+                                        [svgIcon]="review >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                    </mat-icon>
+                                    <mat-icon class="text-rose-500 icon-size-10"
+                                        [svgIcon]="review >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                    </mat-icon>
+                                    <mat-icon class="text-rose-500 icon-size-10"
+                                        [svgIcon]="review >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                    </mat-icon>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Overdue -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-4xl font-bold text-red-600 dark:text-red-500">{{t('promotions_sent')}}
+                                </div>
+                            </div>
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                    {{countSent ? countSent : 0}}
+                                </div>
+                                <div class="text-4xl font-medium text-red-600 dark:text-red-500">
+                                    {{t('views')}}:&nbsp;<span>{{countRead ? countRead : 0}}</span></div>
+                            </div>
+                        </a>
+                    </div>
+                    <hr>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                        <!-- Summary -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewVibe >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewVibe >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewVibe >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewVibe >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewVibe >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-medium text-red-600 dark:text-red-500">{{t('vibe_review')}}
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Overdue -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewQuality >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewQuality >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewQuality >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewQuality >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewQuality >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-medium text-red-600 dark:text-red-500">{{t('quality_review')}}
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Issues -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewPrice >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewPrice >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewPrice >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewPrice >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewPrice >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-medium text-red-600 dark:text-red-500">{{t('price_review')}}
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Features -->
+                        <a href (click)="false"
+                            class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                            <div class="flex flex-col items-center mt-2">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewChildFriendly >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewChildFriendly >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewChildFriendly >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewChildFriendly >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-10"
+                                            [svgIcon]="reviewChildFriendly >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </div>
+                                <div class="text-3xl font-medium text-red-600 dark:text-red-500">
+                                    {{t('child_friendly_review')}}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div fxLayout fxLayoutAlign="center center" class="mt-20">
+            <qrcode [qrdata]="'https://play.google.com/store/apps/details?id=com.vibeviewer.app'"
+                [allowEmptyString]="true" [cssClass]="'center'" [colorDark]="'#0F172A'" [colorLight]="'#E9E9E9'"
+                [elementType]="'canvas'" [errorCorrectionLevel]="'M'" [imageSrc]="'assets/images/logo/logo-rounded.png'"
+                [imageHeight]="100" [imageWidth]="100" [margin]="4" [scale]="1" [width]="500"></qrcode>
+        </div> -->
+    </div>
+
+    <!-- <div class="bottom-bar">
+    <button mat-flat-button color="primary" (click)="menuClicked('home')">
+        <mat-icon svgIcon="heroicons_outline:home"></mat-icon>&nbsp;&nbsp;Home
+    </button>
+    <button mat-flat-button color="primary" (click)="menuClicked('promotions')">
+        <mat-icon svgIcon="heroicons_outline:light-bulb"></mat-icon>&nbsp;&nbsp;Promotions
+    </button>
+    <button mat-flat-button color="primary" (click)="menuClicked('profile')">
+        <mat-icon svgIcon="heroicons_outline:user"></mat-icon>&nbsp;&nbsp;Profile
+    </button>
+</div> -->
+</ng-container>

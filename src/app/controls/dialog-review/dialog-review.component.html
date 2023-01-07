@@ -1,0 +1,43 @@
+<ng-container *transloco="let t">
+    <h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+        style="margin-bottom: 0px !important;">{{t('add_review')}}</h1>
+    <div mat-dialog-content class="dialog-content">
+        <form name="form" [formGroup]="form" novalidate>
+            <mat-form-field class="w-full">
+                <mat-label class="font-black">{{t('establishment')}}</mat-label>
+                <mat-select placeholder="Establishment" formControlName="userId">
+                    <mat-option *ngFor="let user of userItems" [value]="user.id">
+                        {{user.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div fxLayout fxLayoutAlign="center center"
+                style="margin-top:4px; margin-bottom:12px; cursor: pointer; text-align: center;">
+                <div class="image-box">
+                    <img *ngIf="image" class="image-picker" [src]="image" (click)="captureImage(1)"
+                        onerror="this.src='assets/images/no-image.jpg';this.onerror='';">
+                    <img *ngIf="!image" class="image-placeholder" src="assets/images/add-image.png"
+                        (click)="captureImage(1)" onerror="this.src='assets/images/no-image.jpg';this.onerror='';">
+                </div>
+            </div>
+            <star-rating labelText="{{t('vibe')}}" (ratingChange)="ratingUpdated('vibe', $event)"
+                [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="large" [rating]="ratingVibe">
+            </star-rating>
+            <star-rating labelText="{{t('quality')}}" (ratingChange)="ratingUpdated('quality', $event)"
+                [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="large"
+                [rating]="ratingQuality"></star-rating>
+            <star-rating labelText="{{t('price')}}" (ratingChange)="ratingUpdated('price', $event)"
+                [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="large" [rating]="ratingPrice">
+            </star-rating>
+            <star-rating labelText="{{t('child_friendly')}}" (ratingChange)="ratingUpdated('childFriendly', $event)"
+                [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="large"
+                [rating]="ratingChildFriendly"></star-rating>
+        </form>
+    </div>
+    <div mat-dialog-actions class="dialog-footer" align="end">
+        <span style="flex: 1 1 auto;"></span>
+        <button mat-raised-button color="default" (click)="cancel()">{{t('cancel')}}</button>
+        <button mat-raised-button color="primary" (click)="submit()"
+            [disabled]="!form.valid || !fileToUpload || !image || !ratingVibe || !ratingQuality || !ratingPrice || !ratingChildFriendly">{{t('submit')}}</button>
+    </div>
+</ng-container>

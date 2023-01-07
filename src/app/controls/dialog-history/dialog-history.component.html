@@ -1,0 +1,145 @@
+<ng-container *transloco="let t">
+<h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+    style="margin-bottom: 0px !important;">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold leading-tight">{{item.name}}</div>
+        <div class="-mr-3">
+            <button mat-icon-button (click)="cancel()">
+                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:close'"></mat-icon>
+            </button>
+        </div>
+    </div>
+</h1>
+<div mat-dialog-content class="content-dialog-scroll">
+    <ol>
+        <!-- Activities -->
+        <ng-container *ngFor="let item of list; let i = index; let first = first; let last = last; trackBy: trackByFn">
+
+            <!-- Activity -->
+            <li class="relative flex py-7">
+
+                <div class="relative flex flex-auto">
+
+                    <!-- Image -->
+                    <ng-container *ngIf="item.urlImage">
+                    </ng-container>
+
+                    <!-- Content -->
+                    <div class="flex flex-col flex-auto items-start">
+                        <table style="width:100%">
+                            <tr>
+                                <td rowspan="5">
+                                    <img class="shrink-0 mat-icon-large mr-4 rounded-full overflow-hidden object-cover object-center"
+                                        [src]="item.urlImage" [alt]="'Review image'" onerror="this.src='assets/images/no-image.jpg';this.onerror='';">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{t('vibe')}}</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewVibe >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewVibe >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewVibe >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewVibe >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewVibe >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{t('quality')}}</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewQuality >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewQuality >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewQuality >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewQuality >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewQuality >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{t('price')}}</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewPrice >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewPrice >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewPrice >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewPrice >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewPrice >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{t('child_friendly')}}</td>
+                                <td>
+                                    <div class="flex items-center">
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewChildFriendly >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewChildFriendly >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewChildFriendly >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewChildFriendly >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                        <mat-icon class="text-rose-500 icon-size-5"
+                                            [svgIcon]="item.reviewChildFriendly >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                                        </mat-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <ng-container *ngIf="item.reviewVibe">
+                        </ng-container>
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center mt-2 sm:mt-1 sm:space-x-2 text-md leading-5">
+                            <!-- Date -->
+                            <div>
+                                {{item.reviewDate | date:'MMM dd, h:mm a'}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ng-container>
+    </ol>
+
+</div>
+<div mat-dialog-actions class="dialog-footer" align="end">
+    <span style="flex: 1 1 auto;"></span>
+    <button mat-raised-button color="primary" (click)="cancel()">{{t('done')}}</button>
+</div>
+</ng-container>

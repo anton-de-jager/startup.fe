@@ -1,0 +1,87 @@
+<ng-container *transloco="let t">
+    <button *ngIf="user" mat-mini-fab color="primary" [matMenuTriggerFor]="userActions">
+        <mat-icon svgIcon="heroicons_outline:user"></mat-icon>
+    </button>
+
+    <mat-menu [xPosition]="'before'" #userActions="matMenu">
+        <button mat-menu-item>
+            <span class="flex flex-col leading-none">
+                <span>{{t('signed_in_as')}}</span>
+                <span *ngIf="user" class="mt-1.5 text-md font-medium">{{user.email}}</span>
+            </span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="selectPage('home')">
+            <mat-icon [svgIcon]="'heroicons_outline:home'"></mat-icon>
+            <span>{{t('home')}}</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="selectPage('profile')">
+            <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+            <span>{{t('profile')}}</span>
+        </button>
+        <button mat-menu-item (click)="selectPage('dashboard')">
+            <mat-icon [svgIcon]="'heroicons_outline:document-report'"></mat-icon>
+            <span>{{t('dashboard')}}</span>
+        </button>
+        <button mat-menu-item (click)="selectPage('promotions')" *ngIf="!isReseller">
+            <mat-icon [svgIcon]="'heroicons_outline:light-bulb'"></mat-icon>
+            <span>{{t('promotions')}}</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="signOut()">
+            <mat-icon [svgIcon]="'heroicons_outline:logout'"></mat-icon>
+            <span>{{t('sign_out')}}</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="qr()">
+            <mat-icon [svgIcon]="'heroicons_outline:qrcode'"></mat-icon>
+            <span>Referral Link</span>
+        </button>
+        <button mat-menu-item (click)="app()">
+            <mat-icon [svgIcon]="'heroicons_outline:qrcode'"></mat-icon>
+            <span>App Link</span>
+        </button>
+        <button mat-menu-item (click)="share()">
+            <mat-icon [svgIcon]="'heroicons_outline:share'"></mat-icon>
+            <span>Share Link</span>
+        </button>
+        <button mat-menu-item (click)="email()">
+            <mat-icon [svgIcon]="'heroicons_outline:mail'"></mat-icon>
+            <span>Send Referral Info</span>
+        </button>
+    </mat-menu>
+
+    <!-- <button *ngIf="!user" mat-mini-fab color="primary" (click)="signIn()" matTooltip="{{t('sign_in')}}">
+        <mat-icon svgIcon="heroicons_outline:user"></mat-icon>
+    </button> -->
+
+    <button *ngIf="!user" mat-mini-fab color="primary" [matMenuTriggerFor]="userActionsNotLogged">
+        <mat-icon svgIcon="heroicons_outline:user"></mat-icon>
+    </button>
+
+    <mat-menu [xPosition]="'before'" #userActionsNotLogged="matMenu">
+        <button mat-menu-item (click)="signIn()">
+            <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+            <span>{{t('sign_in')}}</span>
+        </button>
+        <button mat-menu-item (click)="signUp()">
+            <mat-icon [svgIcon]="'heroicons_outline:user'"></mat-icon>
+            <span>{{t('sign_up')}}</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="selectPage('home')">
+            <mat-icon [svgIcon]="'heroicons_outline:home'"></mat-icon>
+            <span>{{t('home')}}</span>
+        </button>
+        <mat-divider class="my-2"></mat-divider>
+        <button mat-menu-item (click)="app()">
+            <mat-icon [svgIcon]="'heroicons_outline:qrcode'"></mat-icon>
+            <span>App Link</span>
+        </button>
+        <button mat-menu-item (click)="share()">
+            <mat-icon [svgIcon]="'heroicons_outline:share'"></mat-icon>
+            <span>Share Link</span>
+        </button>
+    </mat-menu>
+</ng-container>

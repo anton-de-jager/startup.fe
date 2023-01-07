@@ -1,0 +1,41 @@
+<ng-container *transloco="let t">
+    <!-- Loading bar -->
+    <fuse-loading-bar></fuse-loading-bar>
+
+    <!-- Wrapper -->
+    <div class="flex flex-col flex-auto w-full min-w-0 custom-background">
+
+        <!-- Header -->
+        <div style="position: fixed!important;z-index: 101!important;"
+        class="relative flex flex-0 items-center w-full h-16 px-4 z-49 shadow shadow-none border-b bg-card bg-transparent dark-background print:hidden">
+        <ng-container>
+            <div class="flex items-center mx-2 lg:mr-8" (click)="goHome()" style="cursor: pointer">
+                <img class="flex w-16" src="assets/images/logo/logo-text-on-dark.png">
+                </div>
+                <div class="ml-4 text-3xl tracking-tight leading-tight" style="color: #FFF;">{{t(pageSelected)}}</div>
+            </ng-container>
+            <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+                <!-- <languages></languages> -->
+                <user></user>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="flex flex-col flex-auto w-full p-4" style="margin-top: 82px;">
+            <router-outlet *ngIf="true"></router-outlet>
+        </div>
+
+        <!-- Footer -->
+        <div class="relative flex flex-0 items-center w-full h-14 sm:h-20 px-4 md:px-6 z-49 border-t bg-card bg-transparent print:hidden"
+            style="height: 56px!important">
+            <!-- <span class="font-medium text-secondary">Vibe Viewer &copy; {{currentYear}}</span> -->
+        </div>
+
+    </div>
+
+    <div class="bottom-bar">
+        <button *ngFor="let pageItem of pageItems" mat-flat-button color="primary" (click)="menuClicked(pageItem.id)">
+            <mat-icon [svgIcon]="pageItem.icon"></mat-icon>&nbsp;&nbsp;{{t(pageItem.id)}}
+        </button>
+    </div>
+</ng-container>

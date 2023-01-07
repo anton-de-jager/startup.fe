@@ -1,0 +1,315 @@
+<ng-container *transloco="let t">
+
+
+
+    <div class="flex flex-col flex-auto items-center sm:justify-center min-w-0">
+        <div class="w-full sm:w-auto py-8 px-4 sm:p-12 sm:rounded-2xl sm:shadow sm:bg-card">
+            <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+                <!-- Logo -->
+                <div class="w-12">
+                    <img src="assets/images/logo/logo-text.png">
+                </div>
+    
+                <!-- Title -->
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign up</div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>{{t('already_have_account')}}</div>
+                    <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['/sign-in']">{{t('sign_in')}}
+                    </a>
+                </div>
+    
+                <!-- Alert -->
+                <fuse-alert
+                    class="mt-8 -mb-4"
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="alert.type === 'error'">
+                    {{alert.message}}
+                </fuse-alert>
+                <form *ngIf="signUpForm" class="mt-8" [formGroup]="signUpForm" #signUpNgForm="ngForm">
+
+                    <mat-form-field class="w-full">
+                        <mat-label>{{t('establishment_type')}}</mat-label>
+                        <mat-select placeholder="{{t('establishment_type')}}" formControlName="userTypeId"
+                            (selectionChange)="venueTypeChanged($event)">
+                            <mat-option *ngFor="let userTypeItem of userTypeList" [value]="userTypeItem.id">
+                                {{t(userTypeItem.description)}}</mat-option>
+                        </mat-select>
+                        <mat-error>{{t('required')}}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <mat-label>{{t('establishment_name')}}</mat-label>
+                        <input id="name" matInput [formControlName]="'name'">
+                        <mat-error *ngIf="signUpForm.get('name').hasError('required')">
+                            {{t('required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <mat-label>{{t('description')}}</mat-label>
+                        <textarea id="description" matInput [formControlName]="'description'"></textarea>
+                        <mat-error *ngIf="signUpForm.get('description').hasError('required')">
+                            {{t('required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <mat-label>{{t('address')}}</mat-label>
+                        <input readonly matInput placeholder="Address" formControlName="address" id="address"
+                            (click)="getAddress()">
+                        <button matSuffix mat-button (click)="getAddress()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                        <mat-error *ngIf="signUpForm.get('address').hasError('required')">{{t('required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>{{t('email')}}</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'" matPrefix></mat-icon>
+                        <input [formControlName]="'email'" matInput>
+                        <mat-error *ngIf="signUpForm.get('email').hasError('required')">
+                            {{t('required')}}
+                        </mat-error>
+                        <mat-error *ngIf="signUpForm.get('email').hasError('email')">
+                            {{t('validation')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <mat-label>{{t('phone')}}</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:phone'" matPrefix></mat-icon>
+                        <input [formControlName]="'phone'" matInput>
+                        <mat-error *ngIf="signUpForm.get('phone').hasError('required')">
+                            {{t('required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <mat-label>{{t('www')}}</mat-label>
+                        <mat-icon class="icon-size-5" svgIcon="mat_outline:computer" matPrefix></mat-icon>
+                        <input [formControlName]="'web'" matInput>
+                        <mat-error *ngIf="signUpForm.get('web').hasError('required')">
+                            {{t('required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>{{t('password')}}</mat-label>
+                        <input id="password" matInput type="password" [formControlName]="'password'" #passwordField>
+                        <button mat-icon-button type="button"
+                            (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                            matSuffix>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                                [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                                [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                        </button>
+                        <mat-error>
+                            {{t('required')}}
+                        </mat-error>
+                        <mat-error>
+                            Minimum 8 Characters
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div fxLayout fxLayoutAlign="center center"
+                        style="margin-top:4px; margin-bottom:4px; cursor: pointer; text-align: center;"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <div class="image-box">
+                            <img *ngIf="previewImage" class="image-picker" [src]="previewImage"
+                                (click)="captureImage()">
+                            <img *ngIf="!previewImage && signUpForm.value.urlImage" class="image-picker"
+                                [src]="imagesFolder + 'Users/' + signUpForm.value.id + signUpForm.value.urlImage + '?t=' + timestamp"
+                                click)="captureImage()">
+                            <img *ngIf="!previewImage && !signUpForm.value.urlImage" class="image-placeholder"
+                                src="assets/images/add-image.png" (click)="captureImage()">
+                        </div>
+                        <mat-error *ngIf="!fileToUpload&&submitClicked" style="margin-top: 10px; text-align: center;">
+                            {{t('required')}}
+                        </mat-error>
+                    </div>
+
+                    <mat-form-field class="w-full"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== '' && !referralEmailExists">
+                        <mat-label>{{t('referral_email')}}</mat-label>
+                        <input id="referralEmail" matInput [formControlName]="'referralEmail'">
+                    </mat-form-field>
+                    <!-- <fuse-alert [type]="'success'"
+                        *ngIf="signUpForm.value.userTypeId !== '463af20d-e093-4ca0-9ac1-23909de39f9c' && signUpForm.value.userTypeId !== ''">
+                        <span fuseAlertTitle>Referral Discount</span>
+                        Get 10% discount if referred by a valid reseller
+                    </fuse-alert> -->
+
+                    <!-- <div class="inline-flex items-end w-full mt-8">
+                    <mat-checkbox [color]="'primary'" [formControlName]="'agreements'">
+                        <span>{{t('i_agree_to')}}</span>
+                        <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">{{t('terms_of_service')}}
+                        </a>
+                        <span>{{t('and')}}</span>
+                        <a class="ml-1 text-primary-500 hover:underline" [routerLink]="['./']">{{t('privacy_policy')}}
+                        </a>
+                    </mat-checkbox>
+                </div> -->
+
+                    <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+                        [disabled]="signUpForm.disabled" (click)="signUp()">
+                        <span *ngIf="!signUpForm.disabled">
+                            {{t('create_your_account')}}
+                        </span>
+                        <mat-progress-spinner *ngIf="signUpForm.disabled" [diameter]="24" [mode]="'indeterminate'">
+                        </mat-progress-spinner>
+                    </button>
+                    <button class="fuse-mat-button-large w-full mt-6" mat-flat-button (click)="home()">
+                        {{t('home')}}
+                    </button>
+
+                    <!-- <mat-form-field class="w-full">
+                        <input id="code" matInput [formControlName]="'code'">
+                    </mat-form-field> -->
+                    <!-- <button class="fuse-mat-button-large w-full mt-6" mat-flat-button (click)="test()">
+                    Test
+                </button> -->
+
+                </form>
+
+                <hr>
+
+                <div class="inline-flex items-center justify-between w-full mt-1.5">
+                    <div class="text-4xl font-extrabold tracking-tight leading-tight">FAQ's</div>
+                </div>
+                <div class="flex flex-wrap items-start w-full" style="margin-top: 14px;margin-bottom: 16px;">
+                    <div class="flex flex-col w-full max-w">
+                        <mat-accordion class="max-w">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Pricing</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Users</td>
+                                            <td>FREE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Resellers</td>
+                                            <td>FREE</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Venue Subscription</td>
+                                            <td>R350.00 p/m</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Promotions</td>
+                                            <td>1 FREE promotion per week. $5.00 per additional promotion.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Reseller Commission
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Resellers will receive 10% of any amount paid by a venue referred by the
+                                        reseller.</li>
+                                    <li>This includes monthly subscriptions as well as promotions.</li>
+                                </ul>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Cancellation Policy
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Venues are not bound to any contract. They are able to cancel at any time.</li>
+                                    <li>Upon cancellation, the account will remain active until the next billing cycle.
+                                    </li>
+                                </ul>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Promotions</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Promotions can be scheduled when a venue user is logged in.</li>
+                                    <li>On the promotion date, push notifications are sent to all users within a 10km
+                                        radius of
+                                        the
+                                        venue.</li>
+                                    <li>Users will have the option to mute notifications from selected venues.</li>
+                                    <li>Promotions will also appear on the promotion-page on the day of the event.</li>
+                                    <li>Venues are allowed to submit only one promotion per day.</li>
+                                </ul>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Trial Period</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Venues are given a 14 day trial period - where they will be able to familiarise
+                                        themselves with
+                                        Vibe Viewer.</li>
+                                    <li>All functionality is enabled during the trial period.</li>
+                                    <li>After 14 days the venue will no longer be displayed on the home page if payment
+                                        is not
+                                        made
+                                        before then.</li>
+                                </ul>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Search Page (Home)
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Users are able to filter by Venue Type, Distance from their current location or
+                                        selected
+                                        location and Rating.</li>
+                                    <li>Users are able to sort results by Distance, Total Vibes or Average Vibe per
+                                        Rating
+                                        Segment.</li>
+                                </ul>
+                            </mat-expansion-panel>
+
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header [collapsedHeight]="'56px'">
+                                    <mat-panel-title class="font-medium leading-tight">Reviews</mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <ul>
+                                    <li>Reviews are real-time - displaying the date and time of the review.</li>
+                                    <li>Reviews are removed 30 hours after it was submitted.</li>
+                                    <li>The device's camera is used to take a photo, and Ratings are submitted for Vibe,
+                                        Quality, Price
+                                        and Child Friendliness.</li>
+                                    <li>Users are enabled to submit reviews only when they are inside the venue.</li>
+                                    <li>Users are allowed to submit only one review per venue per day.</li>
+                                    <li>All reviews are anonymous.</li>
+                                </ul>
+                            </mat-expansion-panel>
+
+
+
+
+                        </mat-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</ng-container>

@@ -1,0 +1,46 @@
+<ng-container *transloco="let t">
+<h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+    style="margin-bottom: 0px !important;">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold leading-tight"><span *ngIf="type=='user'&&!reviewDate">{{t('no_reviews')}}</span><span *ngIf="type=='user'&&reviewDate">{{t('last_review')}}:&nbsp;</span>{{reviewDate | date:'MMM dd, h:mm a'}}</div>
+        <div class="-mr-3">
+            <button mat-icon-button (click)="cancel()">
+                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:close'"></mat-icon>
+            </button>
+        </div>
+    </div>
+</h1>
+<div mat-dialog-content class="content-dialog" *ngIf="image">
+    <img [src]="image" class="image" onerror="this.src='assets/images/no-image.jpg';this.onerror='';">
+</div>
+<div mat-dialog-actions class="dialog-footer">
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="flex items-center">
+                    <mat-icon class="text-rose-500 icon-size-5"
+                        [svgIcon]="(reviewVibe + reviewQuality + reviewPrice + reviewChildFriendly)/4 >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                    </mat-icon>
+                    <mat-icon class="text-rose-500 icon-size-5"
+                        [svgIcon]="(reviewVibe + reviewQuality + reviewPrice + reviewChildFriendly)/4 >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                    </mat-icon>
+                    <mat-icon class="text-rose-500 icon-size-5"
+                        [svgIcon]="(reviewVibe + reviewQuality + reviewPrice + reviewChildFriendly)/4 >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                    </mat-icon>
+                    <mat-icon class="text-rose-500 icon-size-5"
+                        [svgIcon]="(reviewVibe + reviewQuality + reviewPrice + reviewChildFriendly)/4 >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                    </mat-icon>
+                    <mat-icon class="text-rose-500 icon-size-5"
+                        [svgIcon]="(reviewVibe + reviewQuality + reviewPrice + reviewChildFriendly)/4 >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                    </mat-icon>
+                </div>
+            </td>
+            <td style="text-align: right">
+                <button mat-raised-button color="default" (click)="delete()"
+                    *ngIf="sameUser">{{t('delete')}}</button>
+                <button mat-raised-button color="primary" (click)="cancel()">{{t('done')}}</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</ng-container>

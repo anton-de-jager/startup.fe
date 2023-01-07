@@ -1,0 +1,251 @@
+<!-- <pull-to-refresh></pull-to-refresh> -->
+
+<ng-container *transloco="let t">
+    <div class="flex flex-col flex-auto w-full min-w-0 custom-background">
+
+        <!-- Header -->
+        <div style="position: fixed!important;"
+            class="relative flex flex-0 items-center w-full h-16 px-4 z-49 shadow border-b shadow-none bg-card bg-transparent dark-background print:hidden top-bar">
+            <ng-container>
+                <div class="flex items-center mx-2 lg:mr-8" (click)="goHome()" style="cursor: pointer">
+                    <img class="flex w-16" src="assets/images/logo/logo-text-on-dark.png">
+                </div>
+                <!-- <div style="color: #FFF; margin: 0 auto;">{{location ? location.time : ''}}</div> -->
+            </ng-container>
+            <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+                <!-- <languages></languages> -->
+                <button mat-mini-fab color="primary" (click)="submitFilter(0)" matTooltip="{{t('refresh')}}">
+                    <mat-icon class="fab-icon">refresh</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" (click)="faq()" matTooltip="Frequently Asked Questions">
+                    <mat-icon svgIcon="heroicons_outline:question-mark-circle"></mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" (click)="promotion()" matTooltip="{{t('promotions')}}">
+                    <mat-icon svgIcon="heroicons_outline:bell"></mat-icon>
+                </button>
+                <!-- <button mat-icon-button class="mr-4" (click)="promotion()" aria-label="Example icon button with a filter list icon">
+                    <mat-icon svgIcon="mat_outline:info"></mat-icon>
+                </button> -->
+                <!-- <button mat-icon-button class="mr-4" (click)="share()" aria-label="Example icon button with a filter list icon">
+                    <mat-icon svgIcon="heroicons_outline:share"></mat-icon>
+                </button> -->
+                <user></user>
+            </div>
+        </div>
+
+        <fuse-alert [type]="'primary'" *ngIf="count == 0 && !loading" class="m-4" style="margin-top: 100px!important;">
+            <span fuseAlertTitle>No Venues</span>
+            Update your filter to show more venues
+        </fuse-alert>
+        <fuse-alert [type]="'success'" [appearance]="'fill'" *ngIf="count == 0 && !loading" class="m-4">
+            <span fuseAlertTitle>Here's a <b>great</b> opportunity for you!</span>
+            <ul>
+                <li>Find venues in this area.</li>
+                <li>Get them to subscribe.</li>
+                <li><b>Earn 10% on all their subscriptions.</b></li>
+            </ul>
+        </fuse-alert>
+        <div class="flex flex-wrap items-start w-full" *ngIf="count > 0" style="margin-top: 64px;margin-bottom: 56px;"
+            infinite-scroll [infiniteScrollDistance]="1" (scrolled)="onScrollDown($event)">
+            <fuse-card *ngFor="let item of list"
+                class="flex flex-col sm:flex-row justify-between w-full filter-listing mb-4 fuse-card-light home-card">
+                <div class="flex flex-col flex-auto order-2 sm:order-1 mt-2 pl-4 pr-4">
+                    <div class="text-2xl font-semibold leading-tight" style="margin: 0 auto">{{item.name}}</div>
+                    <div class="text-secondary" style="margin: 0 auto">{{item.description}}</div>
+                    <div style="margin: 0 auto">
+                        <div class="flex items-center">
+                            <mat-icon class="text-rose-500 icon-size-5"
+                                [svgIcon]="item.review >= 1 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                            </mat-icon>
+                            <mat-icon class="text-rose-500 icon-size-5"
+                                [svgIcon]="item.review >= 2 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                            </mat-icon>
+                            <mat-icon class="text-rose-500 icon-size-5"
+                                [svgIcon]="item.review >= 3 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                            </mat-icon>
+                            <mat-icon class="text-rose-500 icon-size-5"
+                                [svgIcon]="item.review >= 4 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                            </mat-icon>
+                            <mat-icon class="text-rose-500 icon-size-5"
+                                [svgIcon]="item.review >= 5 ? 'mat_outline:star' : 'mat_outline:star_border'">
+                            </mat-icon>
+                            <div class="text-secondary ml-1">({{item.reviewCount | number : '1.0-0'}} {{t('reviews')}})
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="item.reviewLast" class="text-secondary mt-2">{{t('last_review')}}: {{item.reviewLast |
+                        date:'MMM dd, h:mm a'}}</div>
+                    <div class="mt-2">
+                        <div class="flex items-center text-secondary my-1">
+                            <span>{{item.address}}</span>
+                        </div>
+                        <div class="flex items-center text-secondary my-1">
+                            <span>{{t('distance')}}:&nbsp;<b>{{item.distance | number : '1.2-2'}} kms</b></span>
+                        </div>
+                        <div class="flex flex-wrap items-center text-secondary my-1">
+                            <span><a href="https://vibeviewer.com" target="_blank">{{item.web}}</a></span>
+                            <span class="mx-2">&bull;</span>
+                            <span class="whitespace-nowrap">{{item.phone}}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-3 -mx-3" style="padding-bottom: 5px;">
+                        <a mat-flat-button class="px-3 mr-1 w-100-p" style="width: 100%;border-radius:12px!important"
+                            mat-button [color]="'primary'" [routerLink]="['./']" (click)="viewLocation(item)"
+                            [disabled]="loading">
+                            {{t('location')}}
+                        </a>
+                        <a mat-flat-button style="width: 100%;border-radius:12px!important" class="px-3" mat-button
+                            [color]="'primary'" [routerLink]="['./']" (click)="viewReviews($event, item)"
+                            [disabled]="loading || item.reviewCount == 0">
+                            {{t('reviews')}}
+                        </a>
+                    </div>
+                </div>
+                <div *ngIf="item.images&&imageConfig"
+                    class="order-1 sm:order-2 w-full sm:w-100 rounded-lg overflow-hidden">
+                    <div *ngIf="item.images.length > 1" class="image-swiper">
+                        <ngx-image-swiper [config]="swiperConfig" [images]="item.images"
+                            (imageClick)="imageClick(item, $event)">
+                        </ngx-image-swiper>
+                        <mat-progress-spinner *ngIf="loading" class="image-spinner" [mode]="'indeterminate'">
+                        </mat-progress-spinner>
+                    </div>
+                    <div *ngIf="item.images.length == 1" class="single-image-container-1">
+                        <div class="single-image-container-2" (click)="imageClick(item, 0)">
+                            <div class="single-image-container-3">
+                                <div class="single-image"
+                                    [style.background-image]="'url(' + item.images[0] + '?t=' + timestamp +')'">
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <mat-progress-spinner *ngIf="loading" class="image-spinner" [mode]="'indeterminate'">
+                        </mat-progress-spinner>
+                    </div>
+                </div>
+            </fuse-card>
+        </div>
+        <img [src]="loading&&!loaded||!imageConfig ? 'assets/images/logo/logo-text-on-dark.png' : ''"
+            class="loading-animated" *ngIf="loading&&!loaded||!imageConfig">
+        <img [src]="loading&&!loaded||!imageConfig ? 'assets/images/finding.gif' : ''" class="animated-gif"
+            *ngIf="loading&&!loaded||!imageConfig">
+        <img [src]="loading&&loaded&&imageConfig ? 'assets/images/findingMore.gif' : ''" class="animated-gif-loaded"
+            *ngIf="loading&&loaded&&imageConfig">
+        <!-- <img src="assets/images/loading.gif" class="animated-gif" *ngIf="loading&&!loaded">
+        <img src="assets/images/loadingOld.gif" class="animated-gif-loaded" *ngIf="loading&&loaded"> -->
+
+        <!-- Footer -->
+        <!-- <div class="relative flex flex-0 items-center w-full h-14 sm:h-20 px-4 md:px-6 z-49 bg-card bg-transparent print:hidden custom-footer"
+            style="height: 56px!important">
+            <span class="font-medium text-secondary">Vibe Viewer &copy; {{currentYear}}</span>
+        </div> -->
+
+    </div>
+
+
+    <fuse-drawer *ngIf="drawerLeftOpened" [name]="'leftDrawer'" [fixed]="true" [opened]="drawerLeftOpened"
+        [position]="'left'" [transparentOverlay]="true" (openedChanged)="openedChangedLeft($event)" [mode]="drawerMode">
+        <div fxFlex="100" fxLayout="column">
+            <form *ngIf="form" name="form" [formGroup]="form" class="form" novalidate class="mb-20">
+                <mat-card class="w-100-p m-4 card">
+                    <mat-card-title>{{t('establishment_type')}}</mat-card-title>
+                    <mat-card-content>
+                        <p>
+                            <mat-checkbox formControlName="restaurants">{{t('restaurants')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="pubs">{{t('pubs')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="clubs">{{t('clubs')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="sportVenues">{{t('sport_venues')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="hotels">{{t('hotels')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="guestHouses">{{t('guest_houses')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="bedAndBreakfasts">{{t('bed_and_breakfasts')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="resorts">{{t('resorts')}}</mat-checkbox>
+                        </p>
+                        <p>
+                            <mat-checkbox formControlName="caravanParks">{{t('caravan_parks')}}</mat-checkbox>
+                        </p>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="w-100-p m-4 card">
+                    <mat-card-title>{{t('distance')}} ({{formatDistance()}})</mat-card-title>
+                    <mat-card-content>
+                        <label id="example-radio-group-label">Distance From:</label>
+                        <mat-slide-toggle formControlName="current" style="display: block;"
+                            (change)="selectOrigin('current', $event)">Current Location</mat-slide-toggle>
+                        <mat-slide-toggle formControlName="map" style="display: block;"
+                            (change)="selectOrigin('map', $event)">Different Location</mat-slide-toggle>
+                            <!-- <mat-form-field appearance="fill">
+                                <mat-label>Distance</mat-label>
+                                <mat-select formControlName="distance" name="distance">
+                                    <mat-option value="5">5 kms</mat-option>
+                                    <mat-option value="10">10 kms</mat-option>
+                                    <mat-option value="20">20 kms</mat-option>
+                                    <mat-option value="30">30 kms</mat-option>
+                                    <mat-option value="40">40 kms</mat-option>
+                                    <mat-option value="50">50 kms</mat-option>
+                                    <mat-option value="60">60 kms</mat-option>
+                                    <mat-option value="70">70 kms</mat-option>
+                                    <mat-option value="80">80 kms</mat-option>
+                                    <mat-option value="90">90 kms</mat-option>
+                                    <mat-option value="100">100 kms</mat-option>
+                                </mat-select>
+                              </mat-form-field> -->
+
+                        <mat-slider thumbLabel class="slider" formControlName="distance" tickInterval="10" step="5"
+                            min="0" max="100" aria-label="units"></mat-slider>
+                    </mat-card-content>
+                </mat-card>
+                <mat-card class="w-100-p m-4 card">
+                    <mat-card-title>Rating</mat-card-title>
+                    <mat-card-content>
+                        <star-rating labelText="{{t('vibe')}}" (ratingChange)="ratingUpdated('vibe', $event)"
+                            [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="medium"
+                            [rating]="ratingVibe"></star-rating>
+                        <star-rating labelText="{{t('quality')}}" (ratingChange)="ratingUpdated('quality', $event)"
+                            [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="medium"
+                            [rating]="ratingQuality"></star-rating>
+                        <star-rating labelText="{{t('price')}}" (ratingChange)="ratingUpdated('price', $event)"
+                            [labelPosition]="'left'" [showHalfStars]="true" [space]="'around'" size="medium"
+                            [rating]="ratingPrice"></star-rating>
+                        <star-rating labelText="{{t('child_friendly')}}"
+                            (ratingChange)="ratingUpdated('childFriendly', $event)" [labelPosition]="'left'"
+                            [showHalfStars]="true" [space]="'around'" size="medium" [rating]="ratingChildFriendly">
+                        </star-rating>
+                    </mat-card-content>
+                </mat-card>
+
+                <div fxFlex="100" class="ml-4 mr-6">
+                    <button mat-flat-button fxFlex="100" color="primary" class="mb-4"
+                        style="margin-left: 4px; margin-right: 4px; width:100%" (click)="submitFilter(1)"
+                        [disabled]="loading">{{t('filter')}}</button>
+                </div>
+            </form>
+        </div>
+    </fuse-drawer>
+
+    <div class="bottom-bar">
+        <button mat-flat-button color="primary" (click)="menuClicked('leftSidebar')" [disabled]="loading">
+            <mat-icon svgIcon="heroicons_outline:filter"></mat-icon>&nbsp;&nbsp;{{t('filter')}}
+        </button>
+        <button mat-flat-button color="primary" (click)="menuClicked('bottomSheet')" [disabled]="loading">
+            <mat-icon svgIcon="mat_outline:sort"></mat-icon>&nbsp;&nbsp;{{t('sort')}}
+        </button>
+        <button mat-flat-button color="primary" (click)="getReview()"
+            [disabled]="(listNearby ? listNearby.length == 0 : true)==true">
+            <mat-icon svgIcon="heroicons_outline:camera"></mat-icon>&nbsp;&nbsp;{{t('review')}}
+        </button>
+    </div>
+</ng-container>

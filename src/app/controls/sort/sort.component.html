@@ -1,0 +1,36 @@
+<mat-nav-list *transloco="let t">
+    <a href mat-list-item (click)="sort('distance', $event)">
+      <span mat-line>{{t('distance')}}</span>
+      <span mat-line>{{t('location')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('reviewCount', $event)">
+      <span mat-line>{{t('total_vibes')}}</span>
+      <span mat-line>{{t('total_number_of_vibes')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('review', $event)">
+      <span mat-line>{{t('review')}}</span>
+      <span mat-line>{{t('best_total_reviews')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('vibe', $event)">
+      <span mat-line>{{t('vibe_review')}}</span>
+      <span mat-line>{{t('best_vibe')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('quality', $event)">
+      <span mat-line>{{t('quality_review')}}</span>
+      <span mat-line>{{t('best_quality')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('price', $event)">
+      <span mat-line>{{t('price_review')}}</span>
+      <span mat-line>{{t('best_price')}}</span>
+    </a>
+  
+    <a href mat-list-item (click)="sort('childFriendly', $event)">
+      <span mat-line>{{t('child_friendly_review')}}</span>
+      <span mat-line>{{t('best_place_to_take_kids')}}</span>
+    </a>
+  </mat-nav-list>

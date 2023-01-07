@@ -1,0 +1,101 @@
+<ng-container *transloco="let t">
+
+
+
+
+
+    <div class="flex flex-col flex-auto items-center sm:justify-center min-w-0">
+        <div class="w-full sm:w-auto py-8 px-4 sm:p-12 sm:rounded-2xl sm:shadow sm:bg-card">
+            <div class="w-full max-w-80 sm:w-80 mx-auto sm:mx-0">
+                <!-- Logo -->
+                <div class="w-12">
+                    <img src="assets/images/logo/logo-text.png">
+                </div>
+    
+                <!-- Title -->
+                <div class="mt-8 text-4xl font-extrabold tracking-tight leading-tight">Sign in</div>
+                <div class="flex items-baseline mt-0.5 font-medium">
+                    <div>Don't have an account?</div>
+                    <a
+                        class="ml-1 text-primary-500 hover:underline"
+                        [routerLink]="['/sign-up']">Sign up
+                    </a>
+                </div>
+    
+                <!-- Alert -->
+                <fuse-alert
+                    class="mt-8 -mb-4"
+                    *ngIf="showAlert"
+                    [appearance]="'outline'"
+                    [showIcon]="false"
+                    [type]="alert.type"
+                    [@shake]="alert.type === 'error'">
+                    {{alert.message}}
+                </fuse-alert>
+                <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
+
+                    <!-- Email field -->
+                    <mat-form-field class="w-full">
+                        <mat-label>{{t('email_address')}}</mat-label>
+                        <input id="email" matInput [formControlName]="'email'">
+                        <mat-error *ngIf="signInForm.get('email').hasError('required')">
+                            {{t('email_required')}}
+                        </mat-error>
+                        <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                            {{t('email_validation')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Password field -->
+                    <mat-form-field class="w-full">
+                        <mat-label>{{t('password')}}</mat-label>
+                        <input id="password" matInput type="password" [formControlName]="'password'" #passwordField>
+                        <button mat-icon-button type="button"
+                            (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                            matSuffix>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'password'"
+                                [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            <mat-icon class="icon-size-5" *ngIf="passwordField.type === 'text'"
+                                [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                        </button>
+                        <mat-error>
+                            {{t('password_required')}}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Actions -->
+                    <div class="inline-flex items-center w-full mt-1.5">
+                        <!-- <mat-checkbox
+                        [color]="'primary'"
+                        [formControlName]="'rememberMe'">
+                        Remember me
+                    </mat-checkbox> -->
+                        <a class="text-md font-medium text-primary-500 hover:underline"
+                            [routerLink]="['/forgot-password']">{{t('forgot_password')}}
+                        </a>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button class="fuse-mat-button-large w-full mt-6" mat-flat-button [color]="'primary'"
+                        [disabled]="signInForm.disabled" (click)="signIn()">
+                        <span *ngIf="!signInForm.disabled">
+                            {{t('sign_in')}}
+                        </span>
+                        <mat-progress-spinner *ngIf="signInForm.disabled" [diameter]="24" [mode]="'indeterminate'">
+                        </mat-progress-spinner>
+                    </button>
+                    <button class="fuse-mat-button-large w-full mt-6" mat-flat-button (click)="home()">
+                        {{t('home')}}
+                    </button>
+                    <hr>
+                    <div class="d-flex flex-column flex-lg-row align-items-center p-12" *ngIf="showPlayStore">
+                        <a class="max-w-80 w-full mt-0" href
+                            (click)="navigateExternal($event, 'https://play.google.com/store/apps/details?id=com.vibeviewer.app&gl=ZA')"><img
+                                class="app-badge" src="assets/img/google-play-badge.svg" alt="..." /></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</ng-container>

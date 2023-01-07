@@ -1,0 +1,29 @@
+<ng-container *transloco="let t">
+    <h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+        style="margin-bottom: 0px !important;">
+        <div class="flex flex-col">
+            <div class="text-2xl font-semibold leading-tight">Vibe Viewer FAQ's</div>
+            <p>Send FAQ's via Email</p>
+        </div>
+    </h1>
+    <div mat-dialog-content fxLayout fxLayoutAlign="center center">
+        <form name="form" [formGroup]="form" novalidate>
+            <mat-form-field class="w-full">
+                <mat-label>{{t('email')}}</mat-label><input matInput placeholder="{{t('email')}}"
+                    formControlName="email" id="email" maxlength="50">
+                <mat-error *ngIf="form.get('email').hasError('required')">{{t('email_required')}}</mat-error>
+            </mat-form-field>
+        </form>
+    </div>
+    <div mat-dialog-actions class="dialog-footer" style="margin-top: 0!important;" align="end">
+        <span style="flex: 1 1 auto;"></span>
+        <button mat-raised-button color="default" (click)="cancel()">{{t('cancel')}}</button>
+        <button mat-raised-button color="primary" [disabled]="!form.valid || submitting" (click)="submit()">
+            <span *ngIf="!submitting">
+                Send
+            </span>
+            <mat-progress-spinner *ngIf="submitting" [diameter]="24" [mode]="'indeterminate'">
+            </mat-progress-spinner>
+        </button>
+    </div>
+</ng-container>

@@ -1,0 +1,46 @@
+<ng-container *transloco="let t">
+<h1 mat-dialog-title class="accent dialog-title bg-primary text-on-primary text-secondary"
+    style="margin-bottom: 0px !important;">
+    <div class="flex items-center justify-between">
+        <div class="text-2xl font-semibold leading-tight" *ngIf="userId!='00000000-0000-0000-0000-000000000000'">{{name}}</div>
+        <div class="text-2xl font-semibold leading-tight" *ngIf="userId=='00000000-0000-0000-0000-000000000000'">System Message</div>
+        <div class="-mr-3">
+            <button mat-icon-button (click)="cancel()">
+                <mat-icon class="icon-size-5" [svgIcon]="'mat_outline:close'"></mat-icon>
+            </button>
+        </div>
+    </div>
+</h1>
+<div mat-dialog-content class="content-dialog">
+    <div class="relative flex flex-col flex-auto min-w-0 m-12 overflow-hidden">
+        <div fxLayout fxLayoutAlign="center center mb-4" style="text-align: center">
+            <div class="text-4xl font-extrabold tracking-tight leading-tight mb-4" style="margin: 0 auto">{{title}}</div>
+            <div class="image-box">
+                <img [src]="api + '/Images/Promotions/' + id + '.' + urlImage" class="image-picker">
+            </div>
+            <p style="text-align: center;" class="mt-4" [innerHTML]="content"></p>
+        </div>
+        <hr>
+        <div fxLayout fxLayoutAlign="center center mt-4" style="text-align: center">
+                <a mat-flat-button style="border-radius:12px!important" class="px-3 mr-1"
+                    mat-button [color]="'primary'" [routerLink]="['./']" (click)="viewLocation(lat, lon)"
+                    [disabled]="loading" *ngIf="userId!='00000000-0000-0000-0000-000000000000'">
+                    {{t('location')}}
+                </a>
+                <a mat-flat-button style="border-radius:12px!important" class="px-3" mat-button
+                    [color]="'primary'" [routerLink]="['./']" (click)="viewReviews($event, images)"
+                    [disabled]="loading || images.length==0" *ngIf="userId!='00000000-0000-0000-0000-000000000000'">
+                    {{t('reviews')}}
+                </a>
+                <a mat-flat-button style="border-radius:12px!important" class="px-3" mat-button
+                    [color]="'primary'" href="https://play.google.com/store/apps/details?id=com.vibeviewer.app"
+                    [disabled]="loading" target="_blank" *ngIf="userId=='00000000-0000-0000-0000-000000000000'">
+                    Play Store
+                </a>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="dialog-footer" style="margin-top: 0!important;" align="end">
+    <span style="flex: 1 1 auto;"></span>
+    <button mat-raised-button color="primary" (click)="submit()">{{t('done')}}</button>
+</div>
